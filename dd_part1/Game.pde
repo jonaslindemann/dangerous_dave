@@ -16,7 +16,7 @@ class Game {
         isOver = false;
         isFinished = false;
         
-        cave = new Cave(20, 20);
+        cave = new Cave(20, 20, 3);
         cave.placePlayer();
     }
     

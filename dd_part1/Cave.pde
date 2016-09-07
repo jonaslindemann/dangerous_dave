@@ -20,11 +20,15 @@ class Cave extends Map {
     PImage doorImage;
     PImage closedDoorImage;
     PImage openDoorImage;
-    PImage diamondTiles;    
+    PImage diamondTiles;
     
-    public Cave(int rows, int cols) 
+    int nBoulders;
+    int nEmpty;
+    int nDiamonds;
+       
+    public Cave(int rows, int cols, int factor) 
     {
-        super(rows, cols);
+        super(rows, cols, factor);
 
         gravelImage = loadImage("gravel.png");
         emptyImage = loadImage("empty.png");
@@ -39,7 +43,11 @@ class Cave extends Map {
         
         playerImage = createImage(32,32,ARGB);
         playerTileImage = loadImage("player.png");
-        playerImage.copy(playerTileImage, 0 * 32, 0 * 32, 32, 32, 0, 0, 32, 32);                
+        playerImage.copy(playerTileImage, 0 * 32, 0 * 32, 32, 32, 0, 0, 32, 32);   
+        
+        nBoulders = int(0.15*nRows*nCols);
+        nEmpty = int(0.25*nRows*nCols);
+        nDiamonds = int(0.05*nRows*nCols);        
         
         fillMap();
     }

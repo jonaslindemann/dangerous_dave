@@ -11,6 +11,9 @@ class Map
 
     int nRows; 
     int nCols;
+    int nBoulders;
+    int nEmpty;
+    int nDiamonds;
     int diamondFrame;
     
     int viewPortWidth;
@@ -37,10 +40,12 @@ class Map
         viewPortRow = 0;
         viewPortCol = 0;
         
+        nBoulders = int(0.15*nRows*nCols);
+        nEmpty = int(0.25*nRows*nCols);
+        nDiamonds = int(0.05*nRows*nCols);
         
         // Läs in bilder från data-katalogen
 
-    
         map = new int[nRows][nCols];
     }
                     

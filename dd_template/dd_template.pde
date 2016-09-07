@@ -1,13 +1,13 @@
-Game game;
-
 void setup() 
 {
+    // Bestäm storleken på fönstret
+
     size(1024,768, P3D);
-    game = new Game(0);
 }
 
 void draw()
 {
+    // Rensa bakgrunden
+
     background(0);
-    game.draw();
-}  //<>//
+} 

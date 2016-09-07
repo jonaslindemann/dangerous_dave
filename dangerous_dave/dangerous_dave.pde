@@ -15,7 +15,7 @@ boolean giveUp;
 
 void setup() 
 {
-    size(1024,768, P3D);
+    size(1280,1024, P3D);
     //size(1024,768);
     //fullScreen(P3D);
     
