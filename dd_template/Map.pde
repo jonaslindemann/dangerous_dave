@@ -1,3 +1,4 @@
+final int OUTSIDE = -1;
 
 class Map 
 {   
@@ -11,41 +12,24 @@ class Map
 
     int nRows; 
     int nCols;
-    int nBoulders;
-    int nEmpty;
-    int nDiamonds;
-    int diamondFrame;
     
     int viewPortWidth;
     int viewPortHeight;
     int viewPortRow;
     int viewPortCol;
-    
-    boolean doorOpen;
-    int doorCol;
-    int doorRow;
-    
+       
     public Map(int rows, int cols, int factor) 
     {
         nRows = rows;
         nCols = cols;
         cellWidth = 32;
         magFac = factor;
-
-        doorOpen = false;
-        diamondFrame = 0;
         
         viewPortWidth = width/(cellWidth * magFac) + 1; 
         viewPortHeight = height/(cellWidth * magFac) + 1;
         viewPortRow = 0;
         viewPortCol = 0;
-        
-        nBoulders = int(0.15*nRows*nCols);
-        nEmpty = int(0.25*nRows*nCols);
-        nDiamonds = int(0.05*nRows*nCols);
-        
-        // Läs in bilder från data-katalogen
-
+                
         map = new int[nRows][nCols];
     }
                     

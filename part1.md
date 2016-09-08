@@ -9,7 +9,6 @@ Spelplanen eller grottan består av ett rektangulärt rutnät. Varje ruta inneh�
  * WALL - Vägg som man inte kan gräva sig igenom
  * BOULDER - Sten som kan flytta sig genom de gångar man gräver
  * PLAYER - Spelare anger att vår hjälte finns i denna ruta.
- * OUTSIDE - Anger en ruta utanför grottan.
  * DIAMOND - Diamant
  * DOOR - Dörr eller utgång.
 
@@ -54,9 +53,8 @@ Vi börjar med att skapa beskrivande namn på de värden vi skall lagra i rutnä
     final int WALL = 2;
     final int BOULDER = 3;
     final int PLAYER = 4;
-    final int OUTSIDE = 5;
-    final int DIAMOND = 6;
-    final int DOOR = 7;
+    final int DIAMOND = 5;
+    final int DOOR = 6;
 
 **final int** anger att vi skapar en variabel som inte kan ändras när man kör programmet. **final** betyder slutlig och anger att den inte får ändras.
 
