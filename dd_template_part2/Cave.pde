@@ -49,10 +49,15 @@ class Cave extends Map {
         nEmpty = int(0.25*nRows*nCols);
         nDiamonds = int(0.05*nRows*nCols);        
         
-        fillMap();
+        createGravel();
+        createWalls();
+        createEmpty();
+        createBoulders();
+        createDiamonds();
+        placePlayer(); // Added
     }
     
-    void placePlayer()
+    void placePlayer() // Added
     {
         playerRow = int(random(nRows-2))+1;    
         playerCol = int(random(nCols-2))+1;
@@ -60,7 +65,7 @@ class Cave extends Map {
         map[playerRow][playerCol] = PLAYER;
         centerViewPort(playerRow, playerCol);
     }     
-    
+        
     void placeRandom(int r0, int r1, int c0, int c1, int value)
     {
         int r = int(random(r0, r1));
@@ -111,22 +116,7 @@ class Cave extends Map {
         for (int i=0; i<nDiamonds; i++)
             placeRandom(1,nRows-2,1,nCols-1,DIAMOND);
     }
-    
-    void placeDoor()
-    {
-        placeRandom(1,nRows-2,1,nCols-1,DOOR);        
-    }        
-    
-    void fillMap()
-    {
-        createGravel();
-        createWalls();
-        createEmpty();
-        createBoulders();
-        createDiamonds();
-        placeDoor();
-    }
-        
+                
     void drawCell(int cellType, int x, int y)
     {
         switch(cellType)
@@ -153,18 +143,6 @@ class Cave extends Map {
                 image(playerImage, x, y, cellWidth * magFac, cellWidth * magFac);               
                 break;
             case OUTSIDE:
-                break;
-            case DOOR:
-                if (doorOpen)
-                {
-                    image(emptyImage, x, y, cellWidth * magFac, cellWidth * magFac);               
-                    image(openDoorImage, x, y, cellWidth * magFac, cellWidth * magFac);
-                }
-                else
-                {
-                    image(emptyImage, x, y, cellWidth * magFac, cellWidth * magFac);               
-                    image(closedDoorImage, x, y, cellWidth * magFac, cellWidth * magFac);                            
-                }
                 break;
         }
     }
