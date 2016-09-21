@@ -54,18 +54,8 @@ class Cave extends Map {
         createEmpty();
         createBoulders();
         createDiamonds();
-        placePlayer(); // Added
     }
-    
-    void placePlayer() // Added
-    {
-        playerRow = int(random(nRows-2))+1;    
-        playerCol = int(random(nCols-2))+1;
-                
-        map[playerRow][playerCol] = PLAYER;
-        centerViewPort(playerRow, playerCol);
-    }     
-        
+            
     void placeRandom(int r0, int r1, int c0, int c1, int value)
     {
         int r = int(random(r0, r1));
@@ -139,8 +129,7 @@ class Cave extends Map {
                 image(wallImage, x, y, cellWidth * magFac, cellWidth * magFac);               
                 break;
             case PLAYER:
-                image(emptyImage, x, y, cellWidth * magFac, cellWidth * magFac);               
-                image(playerImage, x, y, cellWidth * magFac, cellWidth * magFac);               
+                // Rita upp spelaren här
                 break;
             case OUTSIDE:
                 break;

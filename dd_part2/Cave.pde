@@ -59,6 +59,26 @@ class Cave extends Map {
         createDiamonds();
     }
     
+    void movePlayer(int dr, int dc)
+    {       
+        // Kontrollera att vi inte går igenom väggar eller stenar
+        
+        if ((map[playerRow+dr][playerCol+dc]!=WALL)&&
+            (map[playerRow+dr][playerCol+dc]!=BOULDER))
+        {
+            // Sätt nuvarande spelposition i grottan till EMPTY
+        
+            map[playerRow][playerCol] = EMPTY;
+            
+            // placera spelaren i grottan dr, dc anger förflyttning
+            
+            map[playerRow+dr][playerCol+dc] = PLAYER;
+            
+            playerRow += dr;
+            playerCol += dc;
+        }
+    }
+    
     void placePlayer()
     {
         playerRow = int(random(nRows-2))+1;    

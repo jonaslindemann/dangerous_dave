@@ -75,17 +75,17 @@ class Cave extends Map {
 } 
 ```
 
-För att spelare skall synas i grottan måste vi anropa funktionen från Cave()
+För att spelare skall synas i grottan måste vi anropa funktionen från vårt huvudprogram:
 
 ```java
-public Cave(int rows, int cols, int factor) 
+Cave cave;
+
+void setup() 
 {
-    super(rows, cols, factor);
-
-    ...
-
-    createDiamonds();
-    placePlayer(); // <--- Lägg till detta anrop
+    size(1024,768, P3D);
+    
+    cave = new Cave(20, 20, 1);
+    cave.placePlayer();
 }
 ```
 
@@ -109,5 +109,144 @@ void drawCell(int cellType, int x, int y)
 
 # Uppgift 1 
 
-Lägg till kod för att rita upp spelaren i **drawCell(...)**
+Lägg till kod för att rita upp spelaren i **drawCell(...)**. Titta på hur koden för resten av blocken är konstruerad.
 
+# Förflytta spelaren
+
+Vi skall nu skriva en funktion som flyttar vår spelare i grottan. I funktionen måste vi tänka på att man inte kan gå igenom stenblock eller väggar. Funktionen kallar vi **movePlayer(...)** och lägger i **Cave**-klassen:
+
+```java
+void movePlayer(int dr, int dc)
+{       
+    // Kontrollera att vi inte går igenom väggar eller stenar
+    
+    if ((map[playerRow+dr][playerCol+dc]!=WALL)&&
+        (map[playerRow+dr][playerCol+dc]!=BOULDER))
+    {
+        // Sätt nuvarande spelposition i grottan till EMPTY
+    
+        map[playerRow][playerCol] = EMPTY;
+        
+        // placera spelaren i grottan dr, dc anger förflyttning
+        
+        map[playerRow+dr][playerCol+dc] = PLAYER;
+        
+        playerRow += dr;
+        playerCol += dc;
+    }
+}
+```
+
+Nu har vi en funktion som kan flytta spelaren. För att kunna spela spelet måste vi anropa denna när man trycker på piltangenterna eller en handkontroll. Detta skall vi lägga till i huvudprogrammet.
+
+I processing finns en fördefinierad variabel, **keypressed**, som anger om en tangent är nedtryckt eller inte. Det finns också en variabel, **keyCode**, som innehåller vilken specialtangent som trycktes ner. 
+
+Lägg till följande i huvudprogrammets **draw()**-funktion:
+
+```java
+void draw()
+{
+    background(0);
+    
+    if (keyPressed)
+    {
+        println(keyCode);
+    }
+
+    cave.draw(); 
+}
+```
+
+Vad händer när man kör programmet? Längst ner i fönstret visas olika siffror beroende på vilken tangent som trycks ner:
+
+    37
+    37
+    37
+    39
+    39
+    39
+    39
+    39
+    39
+    39
+    39
+    39
+    39
+    39
+    40
+    40
+    40
+    40
+    40
+
+Problemet är att det går för fort. Hade vi flyttat spelare så fort som dessa siffror visas hade det varit svårt att styra vår spelare. Vi måste fixa detta på något sätt. Vi skapar en speciell variabel, **keyWasReleased**, för att hålla reda på om en tangent inte längre trycks ner. Vad händer i följande kod:
+
+```java
+Cave cave;
+
+boolean keyWasReleased;
+
+void setup() 
+{
+    size(1024,768, P3D);
+    
+    cave = new Cave(20, 20, 1);
+    cave.placePlayer();
+    
+    keyWasReleased = true;
+}
+
+void draw()
+{
+    background(0);
+    
+    if (keyPressed)
+    {
+        if (keyWasReleased)
+        {
+            keyWasReleased = false;
+            println(keyCode);
+        }
+    }
+    else 
+        keyWasReleased = true;    
+    
+    cave.draw();
+}  
+```
+
+Skillnaden nu är att man den bara skriver ut tangentbordskoden en gång. Precis som vi vill ha det. 
+
+Nu skall vi lägga till kod för att flytta vår spelare. Ändra ovanstående till:
+
+```java
+void draw()
+{
+    background(0);
+    
+    if (keyPressed)
+    {
+        if (keyWasReleased)
+        {
+            keyWasReleased = false;
+
+            switch(keyCode) 
+            {
+                case UP:
+                    cave.movePlayer(-1,0);
+                    break;                    
+            }
+        }
+    }
+    else 
+        keyWasReleased = true;    
+    
+    cave.draw();
+}  
+```
+
+Vad händer? 
+
+# Uppgift 2
+
+Lägg till övriga anrop för att flytta vår hjälte! Övriga piltangenter är, **DOWN**, **LEFT**, **RIGHT**.
