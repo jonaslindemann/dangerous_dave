@@ -1,5 +1,6 @@
 
-class Game {
+/*
+class GameOld {
     
     Cave cave;
            
@@ -9,7 +10,7 @@ class Game {
     boolean isOver;
     boolean isFinished;
               
-    public Game(int startScore)
+    public GameOld(int startScore)
     {
         collectedDiamonds = 0;
         score = startScore;
@@ -26,4 +27,4 @@ class Game {
     }
             
 }    
-    
+*/    

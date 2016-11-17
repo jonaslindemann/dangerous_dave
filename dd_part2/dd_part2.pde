@@ -6,7 +6,7 @@ void setup()
 {
     size(1024,768, P3D);
     
-    cave = new Cave(20, 20, 1);
+    cave = new Cave(20, 20, 3);
     cave.placePlayer();
     
     keyWasReleased = true;
@@ -27,7 +27,18 @@ void draw()
                 case UP:
                     cave.movePlayer(-1,0);
                     break;                    
+                case DOWN:
+                    cave.movePlayer(1,0);
+                    break;                    
+                case LEFT:
+                    cave.movePlayer(0,-1);
+                    break;                    
+                case RIGHT:
+                    cave.movePlayer(0,1);
+                    break;                    
             }
+            
+            cave.centerViewPort(cave.playerRow, cave.playerCol);
         }
     }
     else 
@@ -35,25 +46,3 @@ void draw()
     
     cave.draw();
 }  
-
-/*
-            switch(keyCode) 
-            {
-                case UP:
-                    game.movePlayerUp();
-                    break;
-                case DOWN:
-                    game.movePlayerDown();
-                    break;
-                case LEFT:
-                    game.movePlayerLeft();
-                    break;
-                case RIGHT:
-                    game.movePlayerRight();
-                    break;
-                case ESC:
-                    giveUp = true;
-                    break;
-                    
-            }
-*/
