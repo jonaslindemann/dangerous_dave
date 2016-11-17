@@ -157,9 +157,10 @@ I spelmenyer brukar man kunna ändra alternativ för spelet, starta spelet och a
     }
 ```
  
- ### Uppgift 2 - Lägg till en if-sats för alternativet avsluta
+### Uppgift 2 - Lägg till en if-sats för alternativet avsluta
 
- 
+
+
 
 
 
