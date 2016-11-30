@@ -202,14 +202,294 @@ void setup()
     totalScore = 0;
 ```
 
-Vi måste också nollställa **totalScore** när ett nytt spel startas ifrån menyn:
+Vi måste också nollställa **totalScore** när ett nytt spel startas ifrån menyn och starta nedräkningen. i sätter tidsgränsen för en grotta till 5 minuter. Detta blir 5 * 60 * 1000 millisekunder vilket vi måste ge till vårt **Timer** objekt **countDown**.
 
 ```java
+...
+if (menu.selected()==0)
+{
+    // Nollställ poängräkning
 
+    totalScore = 0;
+    
+    game = new Game(20, 20, 3);
+    game.placePlayer();
+    
+    gameMode = PLAYING;
+    
+    // Starta nedräkning
+    
+    countDown = new Timer(5 * 60 * 1000);
+    countDown.start();
+    
+}
+...
+```
 
+## Utskrift av poängen och tid
 
+För att visa spelets status skall vi använda ett speciellt objekt **Text**. Vi deklarerar detta objekt i vårt huvudprogram i dd_part3:
 
+```java
+// Vår spelklass
 
+Game game;
+Menu menu;
+Timer countDown;
+Text scoreText; // <-- Lägg till här
+```
 
+Vi skapar objektet i **setup()**:
+
+```java
+// Initieringsfunktion
+
+void setup() 
+{
+    ...
+    
+    // Skapa text för poäng
+
+    scoreText = new Text();
+}
+```
+
+För att visa texten måste vi lägga till ett anrop till objektet i uppritningsfunktionen **draw()**. Uppritningen måste ske efter att vi ritat upp spelplanen med **game.draw()** annars kommer texten att skrivas över av spelplanen. I **draw()** lägger vi till:
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+        
+        ...
+        
+        // Rita vår grotta.
+        
+        game.draw();
+
+        // Visa poäng
+        
+        scoreText.setLeftTopText(countDown.prettyString());
+        scoreText.setRightTopText("Diamonds: "+str(game.score)+"/"+str(game.nDiamonds));
+        scoreText.setLeftBottomText("Score: "+str(totalScore));
+        scoreText.setRightBottomText("");
+        scoreText.draw();
+        
+    }
+    
+    ...
+}
+```
+
+## Gå vidare till nästa nivå
+
+Om man spelar spelet nu kommer man aldrig att gå vidare när man samlat alla diamanter. I de tidigare delarna satte vi en variabel **isCompleted** i **Game** objektet när alla diamanter var uppsamlade. Vi skall nu använda denna för att kontrollera om ett spel är slutfört. Efter uppritningen av poängtexten lägger vi till en if-sats som kontrollerar om nivån är klar, dvs **isCompleted** är **true**.
+
+Om nivån är klar lägger vi till poängen för nivån till **totalScore**, och skapar en ny nivå och återstartar nedräkningen:
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+        
+        ...
+        
+        // Rita vår grotta.
+        
+        ...
+
+        // Är alla diamanter upplockade?        
+
+        if (game.isCompleted)
+        {
+            totalScore = totalScore + game.score;
+            
+            game = new Game(20, 20, 3);
+            game.placePlayer();
+            
+            gameMode = PLAYING;
+            
+            // Starta nedräkning
+            
+            countDown = new Timer(5 * 60 * 1000);
+            countDown.start();            
+        }                
+    }
+    
+    ...
+}
+```
+
+## Avsluta spelet när tiden är slut
+
+Vi måste också kontrollera att nedräkningen inte kommit till noll. Om den är noll skall spelet avslutas. Vi lägger till en ytterligare if-sats efter vår förra if-sats för at kontrollera detta:
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+        
+        ...
+        
+        // Rita vår grotta.
+        
+        ...
+
+        // Är alla diamanter upplockade?
+
+        if (game.isCompleted)
+        {
+            ...
+        }                
+
+        // Är nedräkningen 0
+
+        if (countDown.isFinished())
+            gameMode = GAME_OVER;        
+    }
+    
+    ...
+}
+```
+
+## Hantera att spelet är slut
+
+När spelet är slut, dvs när **gameMode = GAME_OVER**, måste vi visa detta på något sätt för användaren. För att göra detta definierar vi först ett ytterligare **Text** objekt i huvudprogrammet:
+
+```java
+// Vår spelklass
+
+Game game;
+Menu menu;
+Timer countDown;
+Text scoreText;
+Text gameOverText; // <-- Lägg till 
+
+int totalScore;
+```
+
+Vi skapar objektet i **setup()**:
+
+```java
+void setup() 
+{
+
+    ...
+
+    // Skapa text för poäng
+    
+    scoreText = new Text();
+    
+    // Skapa text för game over skärm
+    
+    gameOverText = new Text();
+    gameOverText.setCenterText("Game Over");    
+}
+```
+
+För att se till att texten visas måste vi uppdatera if-satsen för GAME_OVER vi skapade tidigare. Först ritar vi upp spelplanen där spelet avslutades. Sen ritar vi upp poängen och game over texten. Vi väntar också på att användaren skall trycka på en tangent för att gå tillbaka till menyn GAME_MENU.
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+        ...
+    }
+    
+    if (gameMode == GAME_OVER)
+    {
+        // Rita upp nivån 
+
+        game.draw();
+
+        // Rita upp poängen
+
+        scoreText.draw();
+
+        // Rita "Game Over"
+
+        gameOverText.draw();
+
+        // Vänta på en tangent
+                
+        if (keyPressed)
+            if (keyWasReleased)
+                gameMode = MENU;
+        else
+            keyWasReleased = true;
+    }
+
+    ...
+}
+```
+
+## Göra spelet svårare - Rörliga stenar
+
+I mallkoden som finns på nätet finns en extra rutin i **Game**-objektet **moveBoulders()**. Denna rutin kollar alla blocken i nivån om det finns tomrum under eller vid sidan om dem. Om det finns tomrum så flyttas blocket. Rutinen kontrollerar också om spelaren finns under ett block. Om så är fallet sätts **isOver** variabeln i **Game**-objektet till true och spelet är slut. Hastigheten på blocken styrs av variabeln **boulderMoveRate**. 
+
+För att få det hela att fungera anropar vi rutinen för varje uppritining i PLAYING.
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+        
+        ...
+
+        // Flytta blocken
+
+        game.moveBoulders();
+        
+        // Rita vår grotta.
+            
+        game.draw();
+
+        
+    }
+    
+    ...
+}
+```
+
+Vi måste också uppdatera vår if-sats för när spelet är slut till:
+
+```java
+void draw()
+{
+    ...
+
+    if (gameMode == PLAYING)
+    {
+
+        ...        
+
+        // Är nedräkningen 0 eller vi blev träffade av ett block
+
+        if ((game.isOver)||(countDown.isFinished()))
+            gameMode = GAME_OVER;        
+    }
+    
+    ...
+}
+```
+
+### Uppgift: Experimentera med moveBoulders
+
+Ändra hastigheten på blocken genom att ändra **game.boulderMoveRate** till 5, 10 och 20. Vad händer? Kan man använda detta för att göra spelet svårare? Isåfall hur? På vilka fler sätt kan man göra spelet svårare?
 
 

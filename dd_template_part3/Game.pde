@@ -51,6 +51,7 @@ class Game extends Map {
     
     int lives;
     int score;
+    
         
     // Spelhastighet
     
@@ -307,7 +308,7 @@ class Game extends Map {
                         
         if (moveCounter == 0)
         {            
-            for (int row=nRows-2; row>=0; row--)
+            for (int row =nRows-2; row>=0; row--)
                 for(int col = 0; col<nCols; col++)
                 {
                     // ###     ###
