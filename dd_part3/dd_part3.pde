@@ -145,6 +145,8 @@ void draw()
         game.moveBoulders();
         game.draw();
         
+        // Rita poäng och nedräkning
+        
         scoreText.setLeftTopText(countDown.prettyString());
         scoreText.setRightTopText("Diamonds: "+str(game.score)+"/"+str(game.nDiamonds));
         scoreText.setLeftBottomText("Score: "+str(totalScore));
