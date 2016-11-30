@@ -60,17 +60,10 @@ void draw()
         {
             if (menu.selected()==0)
             {
-                totalScore = 0;
-                
                 game = new Game(20, 20, 3);
                 game.placePlayer();
                 
                 gameMode = PLAYING;
-                
-                // Starta nedräkning
-                
-                countDown = new Timer(5 * 60 * 1000);
-                countDown.start();
                 
             }
             if (menu.selected()==1)
@@ -130,13 +123,7 @@ void draw()
     
     if (gameMode == GAME_OVER)
     {
-        game.draw();
-                
-        if (keyPressed)
-            if (keyWasReleased)
-                gameMode = MENU;
-        else
-            keyWasReleased = true;
+
     }
     
     if (gameMode == QUIT)

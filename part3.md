@@ -136,21 +136,38 @@ I spelmenyer brukar man kunna ändra alternativ för spelet, starta spelet och a
 ```java
     if (gameMode == MENU)
     {
+        // Rita upp menyn
+
         menu.draw();
+
+        // Kontrollera om menyn uppdaterats med 
+        // tangentbordet
+
         menu.checkKeys();
+
+        // Kontrollera om ett menyval har gjorts
         
         if (menu.isSelected())
         {
+            // Menyval 0 har valts (Starta spel)
+
             if (menu.selected()==0)
             {
+                // Skapa en ny spelomgång och placera
+                // spelaren
+
                 game = new Game(20, 20, 3);
                 game.placePlayer();
+
+                // Ändra spelläget till PLAYING. Detta
+                // Startar spelet nästa gång draw() anropas.
                 
                 gameMode = PLAYING;
                 
             }    
 
-            // Här skall avsluta menyn läggas till
+            // Här skall menyvalet för att avsluta 
+            // läggas till
 
             menu.reset();
         }
@@ -158,6 +175,38 @@ I spelmenyer brukar man kunna ändra alternativ för spelet, starta spelet och a
 ```
  
 ### Uppgift 2 - Lägg till en if-sats för alternativet avsluta
+
+## Poängräkning och tidtagning 
+
+Poäng i spelet får man när man samlar ihop alla diamanter i spelet. För att göra det lite svårare kommer vi spelaren få en max tid på sig att samla alla diamanter. När tiden är slut är spelet också slut. När man klarat en nivå får man alla poäng från den tidigare nivån.
+
+För att hantera poängräkningen lägger vi till en variabel **totalScore** och en timer för nedräkningen:
+
+```java
+Timer countDown; 
+
+int totalScore;
+```
+
+I **setup()** initialiserar vi totalScore. Timern skapar vi när vi startar ett nytt spel.
+
+```java
+void setup() 
+{
+    // Definiera storleken på fönstret
+    
+    size(1024,768, P3D);
+    
+    // Nollställ totalpoäng
+    
+    totalScore = 0;
+```
+
+Vi måste också nollställa **totalScore** när ett nytt spel startas ifrån menyn:
+
+```java
+
+
 
 
 
